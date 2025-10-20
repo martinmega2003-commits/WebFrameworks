@@ -1,0 +1,6 @@
+mixin card(item)
+  section.list-group-item.d-flex.justify-content-between.align-items-center
+    .flex-grow-1
+      h5.mb-1 #{item.name}
+      small.text-muted Doba trvání: #{item.duration} min
+    span.badge.bg-warning.text-dark.me-3 #{item.rating}/10

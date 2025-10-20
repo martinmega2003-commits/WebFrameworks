@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  section.vh-100.gradient-custom
+    .container.py-5.h-100
+      .row.justify-content-center.align-items-center.h-100
+        .col-12.col-lg-9.col-xl-7
+          .card.shadow-2-strong.card-registration(style='border-radius: 15px;')
+            .card-body.p-4.p-md-5.bg-dark.text-white
+              h3.mb-4.pb-2.pb-md-0.mb-md-5.text-center Registration Form
+              form(action='/register' method='post')
+                .row
+                  .col-md-6.mb-4
+                    .form-outline
+                      input#firstName.form-control.form-control-lg(type='text' name='firstName' required)
+                      label.form-label(for='firstName') First Name
+                  .col-md-6.mb-4
+                    .form-outline
+                      input#lastName.form-control.form-control-lg(type='text' name='lastName' required)
+                      label.form-label(for='lastName') Last Name
+
+                .row
+                  .col-md-6.mb-4.d-flex.align-items-center
+                    .form-outline.datepicker.w-100
+                      input#birthdayDate.form-control.form-control-lg(type='text' name='birthday' required)
+                      label.form-label(for='birthdayDate') Birthday
+                  .col-md-6.mb-4
+                    h6.mb-2.pb-1 Gender:
+                    .form-check.form-check-inline
+                      input#femaleGender.form-check-input(type='radio' name='gender' value='female' checked)
+                      label.form-check-label(for='femaleGender') Female
+                    .form-check.form-check-inline
+                      input#maleGender.form-check-input(type='radio' name='gender' value='male')
+                      label.form-check-label(for='maleGender') Male
+                    .form-check.form-check-inline
+                      input#otherGender.form-check-input(type='radio' name='gender' value='other')
+                      label.form-check-label(for='otherGender') Other
+
+                .row
+                  .col-md-6.mb-4.pb-2
+                    .form-outline
+                      input#emailAddress.form-control.form-control-lg(type='email' name='email' required)
+                      label.form-label(for='emailAddress') Email
+                  .col-md-6.mb-4.pb-2
+                    .form-outline
+                      input#phoneNumber.form-control.form-control-lg(type='tel' name='phone' required)
+                      label.form-label(for='phoneNumber') Phone Number
+
+                .mt-4.pt-2.d-flex.justify-content-center
+                  input.btn.btn-primary.btn-lg(type='submit' value='Submit')
