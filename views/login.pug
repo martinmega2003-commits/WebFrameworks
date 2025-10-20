@@ -13,11 +13,11 @@ block content
 
                 form(action='/login' method='post')
                   .form-outline.form-white.mb-4
-                    input#typeEmailX.form-control.form-control-lg(type='email' name='email' required)
+                    input#typeEmailX.form-control.form-control-lg(type='email' value=email name='email' required)
                     label.form-label(for='typeEmailX') Email
 
                   .form-outline.form-white.mb-4
-                    input#typePasswordX.form-control.form-control-lg(type='password' name='password' required)
+                    input#typePasswordX.form-control.form-control-lg(type='password' value=password name='password' required)
                     label.form-label(for='typePasswordX') Password
 
                   p.small.mb-5.pb-lg-2
