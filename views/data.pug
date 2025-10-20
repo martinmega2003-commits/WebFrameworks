@@ -21,13 +21,8 @@ block content
     section(aria-label='Seznam aktivit')
       h2.mb-4.text-secondary History
       .list-group
-        .list-group-item.d-flex.justify-content-between.align-items-center
-          .flex-grow-1
-            h5.mb-1 Gym
-            small.text-muted Doba trvání: 90 min
-          span.badge.bg-warning.text-dark.me-3 4/10
-        .list-group-item.d-flex.justify-content-between.align-items-center
-          .flex-grow-1
-            h5.mb-1 Walking
-            small.text-muted Doba trvání: 24 min
-          span.badge.bg-success.text-light.me-3 7/10
+        if items && items.length
+          each item in items
+            +card(item)
+        else
+          .list-group-item.text-muted No activities found.
