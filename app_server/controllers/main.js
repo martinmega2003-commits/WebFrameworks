@@ -1,3 +1,7 @@
+const mongoose = require('mongoose');
+const Location = mongoose.model('Location')
+
+
 const layout = function(req, res){
   res.render('layout', { title: 'Test' });
 };
@@ -17,20 +21,22 @@ const register = function(req,res){
     });
 }
 
-const data = function (req, res) {
-  const items = [
-    { name: 'Swim', duration: 45, rating: 10 },
-    { name: 'Run', duration: 20, rating: 7 },  
-    { name: 'Gym', duration: 120, rating: 3 }
-  ];
-
-  res.render('data', { items });
+const data_workout = async (req, res) => {
+  try {
+    const items = await Location.find({}).lean();
+    res.render('data_workout', { items });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
 };
+
+
 
 
 module.exports = {
     layout,
     login,
     register,
-    data
+    data_workout,
 }

@@ -6,4 +6,4 @@ mongoose.connect(dbURI)
   .then(() => console.log("✅ Mongoose is connected"))
   .catch((err) => console.error("❌ Connection error:", err));
 
-require('./locations');
+require('./location');
