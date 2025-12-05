@@ -28,7 +28,7 @@ onSubmit(event: Event) {
     password: (form.elements.namedItem('password') as HTMLInputElement)?.value,
   };
 
-  this.http.post('http://localhost:3000/register', body, { withCredentials: true })
+  this.http.post('https://webframeworks-3zft.onrender.com/register', body, { withCredentials: true })
     .subscribe({
       next: res => {
         console.log('ok', res);

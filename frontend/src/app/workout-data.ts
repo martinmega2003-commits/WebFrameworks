@@ -12,7 +12,7 @@ import { Workout } from './data/data';
 export class WorkoutData {
   constructor(private http: HttpClient) { }
 
-  private apiBaseUrl = 'http://localhost:3000/api';
+  private apiBaseUrl = 'https://webframeworks-3zft.onrender.com/api';
 
   public async getWorkoutData(): Promise<Workout[]> {
     const url = `${this.apiBaseUrl}/locations`;
