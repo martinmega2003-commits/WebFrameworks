@@ -1,0 +1,31 @@
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+  .remove-btn {
+    color: #dc3545;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .remove-btn:hover {
+    color: #a71d2a;
+  }
+</style>
+
+<main class="container py-5">
+  <header class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary">MEGA workout</h1>
+  </header>
+
+  <section aria-label="Seznam aktivit">
+    <h2 class="mb-4 text-secondary">History</h2>
+
+            <div class="list-group">
+            <div class="list-group-item" *ngFor="let w of workouts">
+                <h5>{{ w.name }}</h5>
+                <p>Rating: {{ w.rating }}</p>
+                <small>Duration: {{ w.duration }} hours</small>
+            </div>
+            </div>
+  </section>
+</main>

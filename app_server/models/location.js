@@ -6,5 +6,4 @@ const locationSchema = new mongoose.Schema({
   duration: { type: Number, default: 0 }
 });
 
-// registrace modelu s názvem "Location"
 mongoose.model('Location', locationSchema);

@@ -3,37 +3,68 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+const mongoose = require('mongoose');
+
 require('./app_server/models/db');
+require('./app_server/models/users'); // zajistí načtení User modelu
+
 var indexRouter = require('./app_server/routes/index');
-var usersRouter = require('./app_server/routes/users');
 
 var app = express();
 
-// view engine setup
+// ===== PASSPORT + USER NASTAVENÍ =====
+const User = mongoose.model('User');
+
+passport.use(new LocalStrategy({ usernameField: 'email' }, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// ===== CORS pro /api =====
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+// ===== VIEW ENGINE =====
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// ===== ZÁKLADNÍ MIDDLEWARE =====
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// ===== SESSION + PASSPORT MIDDLEWARE =====
+app.use(session({
+  secret: 'keyboard cat',   // můžeš změnit na něco svého
+  resave: false,
+  saveUninitialized: false
+}));
 
-// catch 404 and forward to error handler
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ===== ROUTES =====
+app.use('/', indexRouter);
+
+// ===== 404 HANDLER =====
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// ===== ERROR HANDLER =====
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });

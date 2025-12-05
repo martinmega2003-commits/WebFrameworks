@@ -7,3 +7,4 @@ mongoose.connect(dbURI)
   .catch((err) => console.error("❌ Connection error:", err));
 
 require('./location');
+require('./users');

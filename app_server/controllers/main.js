@@ -1,25 +1,51 @@
 const mongoose = require('mongoose');
-const Location = mongoose.model('Location')
+const Location = mongoose.model('Location');
+const User = mongoose.model('User');
+const passport = require('passport');
 
-
-const layout = function(req, res){
-  res.render('layout', { title: 'Test' });
+// GET /
+const layout = (req, res) => {
+  res.render('layout');
 };
 
-const login = function(req,res){
-    res.render('login', { email: '123@gmail.com', password: '123'});
+// GET /login
+const loginGet = (req, res) => {
+  res.render('login', { user: req.user, error: req.flash ? req.flash('error') : null });
 };
 
-const register = function(req,res){
-    res.render('register', { FirstName: 'Martin',
-        LastName: 'Mega',
-        Birthday: '123456',
-        sex: 'male',
-        email: '123@gmail.com',
-        PhoneNumber: 7856458754
+// POST /login
+const loginPost = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.authenticate()(email, password, (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json({ error: info?.message || 'Login failed' });
+    return res.json({ ok: true, user: user.email });
+  });
+};
 
+
+
+const registerPost = async (req, res) => {
+  try {
+    const { FirstName, LastName, Birthday, gender, email, phone, password } = req.body;
+    const user = new User({
+      username: email,
+      firstName: FirstName,
+      lastName: LastName,
+      birthday: new Date(Birthday),
+      gender,
+      email,
+      phone
     });
-}
+
+    await User.register(user, password);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: err.message });
+  }
+};
+
 
 const data_workout = async (req, res) => {
   try {
@@ -31,12 +57,22 @@ const data_workout = async (req, res) => {
   }
 };
 
-
-
+// Simple JSON API for Angular app
+const apiLocations = async (req, res) => {
+  try {
+    const items = await Location.find({}).lean();
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Database error' });
+  }
+};
 
 module.exports = {
-    layout,
-    login,
-    register,
-    data_workout,
-}
+  layout,
+  loginGet,
+  loginPost,
+  registerPost,
+  data_workout,
+  apiLocations,
+};
