@@ -23,8 +23,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // ===== CORS pro /api =====
+// Použij env FRONTEND_ORIGIN (Render URL), fallback lokálně
+const allowedOrigin = process.env.FRONTEND_ORIGIN || 'https://webframeworks-angluar.onrender.com';
+
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://tvuj-frontend.onrender.com');
+  res.header('Access-Control-Allow-Origin', allowedOrigin);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
