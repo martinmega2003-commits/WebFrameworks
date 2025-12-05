@@ -12,25 +12,22 @@ import { HttpClient } from '@angular/common/http';
 export class Login {
 
 constructor(private http: HttpClient) {}
-
 onLogin(event: Event) {
   event.preventDefault();
   const form = event.target as HTMLFormElement;
-  const body = {
+  const body = new URLSearchParams({
     email: (form.elements.namedItem('email') as HTMLInputElement)?.value,
     password: (form.elements.namedItem('password') as HTMLInputElement)?.value,
-  };
-  this.http.post('http://localhost:3000/login', body, { withCredentials: true })
-    .subscribe({
-      next: res => {
-        console.log('login ok', res);
+  });
 
-
-      },
-      error: err => console.error('login fail', err)
-    });
+  this.http.post('/login', body.toString(), {
+    withCredentials: true,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  }).subscribe({
+    next: res => console.log('login ok', res),
+    error: err => console.error('login fail', err)
+  });
 }
 
 }
-
 

@@ -28,6 +28,7 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
@@ -44,10 +45,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ===== SESSION + PASSPORT MIDDLEWARE =====
 app.use(session({
-  secret: 'keyboard cat',   // můžeš změnit na něco svého
+  secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: { sameSite: 'lax', secure: false }
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -13,17 +13,16 @@ const loginGet = (req, res) => {
   res.render('login', { user: req.user, error: req.flash ? req.flash('error') : null });
 };
 
-// POST /login
-const loginPost = (req, res, next) => {
-  const { email, password } = req.body;
-  return User.authenticate()(email, password, (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).json({ error: info?.message || 'Login failed' });
-    return res.json({ ok: true, user: user.email });
-  });
+const loginPost = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const result = await User.authenticate()(email, password);
+    if (!result.user) return res.status(401).json({ error: result.error?.message || 'Login failed' });
+    return res.json({ ok: true, user: result.user.email });
+  } catch (err) {
+    return next(err);
+  }
 };
-
-
 
 const registerPost = async (req, res) => {
   try {
